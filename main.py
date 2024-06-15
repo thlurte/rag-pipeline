@@ -1,5 +1,5 @@
-from indexing.processing import process_pdf
+from preprocess.indexing import chunking, process_pdf 
 
-file = process_pdf('/home/ahmed/Downloads/The Vital Question Energy, Evolution, and the Origins of Complex Life (Nick Lane) (Z-Library).pdf')
-print(file.open_and_read_pdf()[:2])
-
+document = process_pdf('/home/ahmed/Downloads/b.pdf')
+text_chunks = chunking(10,document.open_and_read_pdf()).chunk_and_split_text()
+print(text_chunks)
