@@ -1,16 +1,27 @@
-from preprocess.indexing import chunking, process_pdf 
 from embed.embedding import load_model
-from retrieve.retriever import similarity_search
 from generate.generator import load_llm
-document = process_pdf('/home/ahmed/Downloads/b.pdf')
+from retrieve.retriever import similarity_search
+from preprocess.indexing import chunking, process_pdf
 
-text_chunks = chunking(10,document.open_and_read_pdf()).chunk_and_split_text()
+def main():
+    # Preprocessing
+    document = process_pdf('/home/ahmed/Downloads/b.pdf')
+    text_chunks = chunking(10,document.open_and_read_pdf()).chunk_and_split_text()
+    
+    #  Embedding
+    embedding_model = load_model(text_chunks)
+    embeddings = embedding_model.encode()
+    
+    # Retrieval
+    query="What is concurrency"
+    retriever = similarity_search(query=query,text=embeddings)
+    top_k = retriever.retrieve()
 
-embedding_model = load_model(text_chunks)
-embeddings = embedding_model.encode()
-retriever = similarity_search(query="What is concurrency",text=embeddings)
+    # Generation
+    llm = load_llm(top_k, embeddings,query)
+    response = llm.chat()
 
-top_k = retriever.retrieve()
+    print(response)
 
-llm = load_llm(top_k, embeddings,"What is concurrency")
-print(llm.chat())
+if __name__ == "__main__":
+    main()

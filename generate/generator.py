@@ -1,9 +1,8 @@
-import os
 import google.generativeai as genai
 
 class load_llm:
     def __init__(self,top_k,results,prompt) -> None:
-        genai.configure(api_key='AIzaSyBb8mq-RCYt0wTMtu6oqHc8GBoNLphJjTU')
+        genai.configure(api_key='mehh....')
         self.generation_config = {
             "temperature": 1,
             "top_p": 0.95,
